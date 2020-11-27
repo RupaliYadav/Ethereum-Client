@@ -15,8 +15,7 @@ abiDecoder.addABI(erc20TransferEvent);
 
 app.get('/eth/api/v1/transaction/:txId', (req, res) => {
     try {
-        //0xcf825420db56cb882de2ca9d36f7d39ce69ffaee9b5f5ff4830cc46618d7deef
-        //txId=0x8237ab106c4434a3d417fe3883f13c0ae73a6b182d40b361d9895ae499ff36f3
+        //getTransaction from transaction hash
         web3.eth.getTransaction(req.params.txId, function (err, txResult) {
             if (err) {
                 console.log(err)
@@ -26,6 +25,7 @@ app.get('/eth/api/v1/transaction/:txId', (req, res) => {
             } else {
 
                 if (txResult.input === '0x') {
+                    //Case 1 : Details about account transfers.
                     web3.eth.getCode(txResult.to, (error, code) => {
                         if (error) {
                             console.log("error: ", error);
@@ -43,12 +43,8 @@ app.get('/eth/api/v1/transaction/:txId', (req, res) => {
                                         "res": false
                                     });
                                 } else {
-                                    //console.log(web3.utils.fromWei(result, "ether") + " ETH")
-                                    console.log("result obtained is :: ", result);
                                     transactionStatus = result.status ? "confirmed" : "not-confirm";
-                                    // console.log("input  is :: ",web3.utils.toAscii(result.input));
                                     res.send({
-
                                         "block": {
                                             "blockHeight": result.blockNumber
                                         },
@@ -77,15 +73,9 @@ app.get('/eth/api/v1/transaction/:txId', (req, res) => {
 
 
                         }
-                        else {
-                            console.log("Response of Code is ", code);
-                        }
                     })
                 } else {
-
-                    //Check and run transaction of Token
-                    //0xcf825420db56cb882de2ca9d36f7d39ce69ffaee9b5f5ff4830cc46618d7deef
-                    //0xb54ced6081b7812297c4170c082d54bf40567ccbfbce0bd35ad9b24bd4ec4e51    
+                    //CASE 2 :: Deatils of Token Transaction
                     web3.eth.getTransactionReceipt(req.params.txId, function (err, result) {
                         if (err) {
                             console.log(err);
@@ -96,18 +86,13 @@ app.get('/eth/api/v1/transaction/:txId', (req, res) => {
                             let arrayIns = [];
                             let arrayOuts = [];
                             let status, blockNumber, hash;
-                            //to == out
-                            //from == in
-                            //console.log(web3.utils.fromWei(result, "ether") + " ETH")
-
+                            
                             console.log("getTransactionReceipt obtained is :: ", result);
                             let logRecords = result.logs;
                             const decodedLogs = abiDecoder.decodeLogs(result.logs);
 
-                            console.log("Decoded logs are:: ", decodedLogs);
+                            //console.log("Decoded logs are:: ", decodedLogs);
                             decodedLogs.forEach(decoded => {
-                                console.log("############ status is ", result.status);
-                                console.log("######### element block no is ", result.blockNumber);
                                 status = result.status ? "confirmed" : "not-confirm";
                                 blockNumber = result.blockNumber;
                                 hash = result.transactionHash;
@@ -157,6 +142,7 @@ app.get('/eth/api/v1/transaction/:txId', (req, res) => {
                                     });
 
                                 } else {
+                                    //CASE 3 :: 
                                     console.log("################# Transaction is of type contract method invoked");
 
                                     res.json({
