@@ -1,0 +1,29 @@
+{
+    "provider":"https://mainnet.infura.io/v3/0dea845cfb6d4bc1bbc4557b43971b8a",
+    "ethchain" : "ETH.main",
+    "currency" : "ETH",
+    "erc20TransferEvent":[
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "name": "from",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "name": "to",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "name": "value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "Transfer",
+            "type": "event"
+        }
+    ]
+}
