@@ -1,5 +1,5 @@
 {
-    "provider":"https://mainnet.infura.io/v3/0dea845cfb6d4bc1bbc4557b43971b8a",
+    "provider":"<<Enter your web3 provider>>",
     "ethchain" : "ETH.main",
     "currency" : "ETH",
     "erc20TransferEvent":[
