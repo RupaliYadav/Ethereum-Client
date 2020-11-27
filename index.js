@@ -2,7 +2,7 @@ const abiDecoder = require('abi-decoder');
 const express = require('express')
 const Web3 = require("web3")
 
-const props = require("./config/dev_config..json")
+const props = require("./config/dev_config.json")
 const app = express()
 const port = 3000
 
