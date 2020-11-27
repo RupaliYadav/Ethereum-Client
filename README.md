@@ -1,5 +1,5 @@
 
-# Ethereum Clien
+# Ethereum Client
 
 ## Getting started
 To get the Node server running locally
